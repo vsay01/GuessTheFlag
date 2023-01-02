@@ -9,16 +9,45 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showingScore = false
+    @State private var showingEndGame = false
     @State private var scoreTitle = ""
+    @State private var score = 0
+    @State private var numberOfPlay = 0
     
+    /// Reset the game
+    ///
+    /// Reset the parameters and call `askQuestion()` to generate a new question
+    func reset() {
+        showingScore = false
+        showingEndGame = false
+        scoreTitle = ""
+        score = 0
+        numberOfPlay = 0
+        askQuestion()
+    }
+    
+    /// Triggered when user tap on the flag
+    ///
+    /// Increase the score when user guess correct
+    /// Increase number of play - user can guess 8 times per game
+    ///
+    /// - Parameters:
+    ///    - number: correspond to the flag that tapped
     func flagTapped(_ number: Int) {
         if number == correctAnswer {
+            score += 1
             scoreTitle = "Correct"
         } else {
             scoreTitle = "Wrong"
         }
 
-        showingScore = true
+        numberOfPlay += 1
+        if(numberOfPlay >= 8) {
+            showingScore = false
+            showingEndGame = true
+        } else {
+            showingScore = true
+        }
     }
     
     var body: some View {
@@ -36,7 +65,7 @@ struct ContentView: View {
                         .foregroundColor(.white)
                 
                 Spacer()
-                Text("Score: ???")
+                Text("Score: \(score)")
                     .foregroundColor(.white)
                     .font(.title.bold())
                 
@@ -71,7 +100,13 @@ struct ContentView: View {
             .alert(scoreTitle, isPresented: $showingScore) {
                 Button("Continue", action: askQuestion)
             } message: {
-                Text("Your score is ???")
+                Text("Your score is \(score)")
+            }
+            
+            .alert("Game Ended", isPresented: $showingEndGame) {
+                Button("Restart", action: reset)
+            } message: {
+                Text("You final score is \(score)")
             }
         }
     }
