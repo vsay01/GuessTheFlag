@@ -72,8 +72,7 @@ struct ContentView: View {
                 Spacer()
                 VStack (spacing: 15){
                     Text("Tap the flag of")
-                        .foregroundStyle(.secondary)
-                        .font(.subheadline.weight(.heavy))
+                        .titleStyle()
                     
                     Text(countries[correctAnswer])
                         .font(.largeTitle.weight(.semibold)) //Dynamic Type
