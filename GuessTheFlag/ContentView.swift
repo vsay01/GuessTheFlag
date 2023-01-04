@@ -80,12 +80,9 @@ struct ContentView: View {
                     
                     ForEach(0..<3) { number in
                         Button {
-                           flagTapped(number)
+                            flagTapped(number)
                         } label: {
-                            Image(countries[number])
-                                .renderingMode(.original) // render the original image pixels rather than trying to recolor them as a button.
-                                .clipShape(Capsule()) // ensures the corners of the shortest edges are fully rounded, while the longest edges remain straight
-                                .shadow(radius: 5) // apply a shadow effect around each flag, making them really stand out from the background.
+                            FlagImage(country: countries[number]) //if we use countries var directly inside FlagImage it won't update the view.
                         }
                     }
                 }
